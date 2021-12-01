@@ -43,3 +43,23 @@ sudo apt install awscli -y
 echo "Copying tar file to aws s3"
 aws s3 cp /tmp/${filename} s3://${s3_bucket_name}/${filename}
 
+inventory_file=/var/www/html/inventory.html
+if [ -f ${inventory_file} ]; then
+	echo "${inventory_file} exists"
+else
+	echo "Creating inventory.html"
+	touch ${inventory_file}
+	echo "Log Type\tTime Created\tType\tSize" >>${inventory_file}
+fi
+
+filesize=$(ls -lh /tmp/${filename} | awk '{print $5}')
+echo "httpd-logs\t${timestamp}\ttar\t${filesize}" >> ${inventory_file}
+
+cronfile=/etc/cron.d/automation
+if [ -f ${cronfile} ] ; then
+	echo "cron file exists"
+else
+	echo "creating cron file"
+       	touch ${cronfile}
+	echo "59 16 * * * root /root/Automation_Project/automation.sh" >> ${cronfile}
+fi
