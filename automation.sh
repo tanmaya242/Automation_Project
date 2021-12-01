@@ -49,11 +49,11 @@ if [ -f ${inventory_file} ]; then
 else
 	echo "Creating inventory.html"
 	touch ${inventory_file}
-	echo "Log Type\tTime Created\tType\tSize" >>${inventory_file}
+	echo "Log Type      Time Created      Type    Size" >>${inventory_file}
 fi
 
 filesize=$(ls -lh /tmp/${filename} | awk '{print $5}')
-echo "httpd-logs\t${timestamp}\ttar\t${filesize}" >> ${inventory_file}
+echo "httpd-logs    ${timestamp}   tar     ${filesize}" >> ${inventory_file}
 
 cronfile=/etc/cron.d/automation
 if [ -f ${cronfile} ] ; then
